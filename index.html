@@ -52,9 +52,9 @@
         <script type="/text/template">
             # Content
             * What is REST?
-            * How do I design REST services?
+            * How do I design using REST?
             * What tools should I use?
-            * What are some good examples to follow?
+            * What are some REST examples?
             * What is Hypermedia?
         </script>
         </section>
@@ -68,6 +68,7 @@
 
               <section data-markdown>
               <script type="text/template">
+                    ## Origin
                     * REST: Representational State Transfer
                     * A convention for architecting web services, NOT a technology
                     * Proposed by Roy Fielding during his Ph. D. Dissertation
@@ -81,9 +82,9 @@
 
               <section data-markdown>
               <script type="text/template">
-                    * stateless API
-                      + each request should convey all state required to process the request
-                      + given a state and request, the server will determine the next state and generate a response
+                    ## Stateless API
+                    + Each request should convey all state required to process the request
+                    + Given a state and request, the server will determine the next state and generate a response
               </script>
               </section>
 
@@ -187,7 +188,7 @@
             <section>
                <section data-markdown>
                <script type="text/template">
-                  # How do I design a REST service?
+                # How do I design using REST?
                </script>
                </section>
             </section>
@@ -266,7 +267,7 @@
 
                <section data-markdown>
                  <script type="text/template">
-                    # Hypermedia
+                    ## Hypermedia
                     * Per Fielding, required for "REST"
                     * Describes internet of things
                       + Machine readability
@@ -283,7 +284,7 @@
 
               <section data-markdown>
                 <script type="text/template">
-                    # Type Marshalling Delimna
+                    ## Type Marshalling Delimna
                     1. Shared Schema 
                     2. URI Construction
                     3. Payload Decoration
@@ -293,7 +294,7 @@
 
               <section data-markdown>
                 <script type="text/template">
-                    # Shared Schema
+                    ## Shared Schema
                     * Publish document listing arguments and interaction details. 
                     * Disadvantages: schema changes break clients as schema information not updated dynamically
                 </script>
@@ -301,7 +302,7 @@
 
               <section data-markdown>
                 <script type="text/template">
-                    # URI Construction
+                    ## URI Construction
                     * Have URI carry type information, easy to generate URI from metadata in service code
                     * Popular
                     * Easy for frameworks using templating and other processing based on type
@@ -312,7 +313,7 @@
 
               <section data-markdown>
                   <script type="text/template">
-                    # Payload Decoration
+                    ## Payload Decoration
                     * Add (meta) to htm, "type" to JSON, etc
                     * Process data based on type hint. 
                     * Drawback: payload tightly bound to source code; changes break existing clients if not realizing new payload info required.
@@ -322,7 +323,7 @@
 
              <section data-markdown>
                   <script type="text/template">
-                    # Narrow Media Type 
+                    ## Narrow Media Type 
                     * (JAX-RS) @Consumes("application/stockquote+xml") 
                     * Full control over URI & payload
                     * Drawback: any independent client would have great difficulty keeping up with changes
