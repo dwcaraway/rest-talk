@@ -87,6 +87,7 @@
                   + Server responds with status code, (possibly) response body
                 * Building block of the Internet as we know it
                 * Normally over TCP/IP transport protocol, but can support others as long as they are reliable
+                * Headers are visible, body is encoded in an envelope with associated Content-Type
                 * Trivia note: Fielding co-wrote the HTTP standard
               </script>
               </section>
@@ -94,7 +95,7 @@
               <section data-markdown>
               <script type="text/template">
                 ## CRUD 
-                * Use common HTTP methods
+                * Uses HTTP methods
                   + POST (Create)
                   + GET (Read)
                   + PUT (Update)
@@ -155,35 +156,307 @@
                   [Twilio API](https://api.twilio.com/2010-04-01)
 
                 ### Request Header
-
-                  User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36
+                <pre><code>
                   Content-Type: text/plain; charset=utf-8 
                   Accept: */*
                   Accept-Encoding: gzip,deflate,sdch
-                    ...
-
+                  ...
+                  </code></pre>
                 ### Response Header 
-
+<pre><code>
                   Content-Type: application/xml 
                   Content-Length: 213 
-                  Connection: close
-                  Etag:
-                  X-Powered-By: AT-5000
-                  X-Shenanigans: none
-                  Access-Control-Allow-Origin: https://www.twilio.com
+                  ...
+                </code></pre>
               </script>
               </section>
 
+              <section>
+                Response Body
+                <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;TwilioResponse&gt;
+  &lt;Version&gt;
+    &lt;Name&gt;2010-04-01&lt;/Name&gt;
+    &lt;Uri&gt;/2010-04-01&lt;/Uri&gt;
+    &lt;SubresourceUris&gt;
+      &lt;Accounts&gt;/2010-04-01/Accounts&lt;/Accounts&gt;
+    &lt;/SubresourceUris&gt;
+  &lt;/Version&gt;
+&lt;/TwilioResponse&gt;
+                  </code></pre>
+              </script>
+              </section>
 
+              <section data-markdown>
+              <script type="text/template">
+                    ## State
+                    * Server is stateless
+                    * Application state resides on the client
+                    * Each request should convey all state required to process the request
+                    * Given a state and request, the server will determine the next state and generate a response
+              </script>
+              </section>
 
 
               <section data-markdown>
               <script type="text/template">
-                    ## Stateless API
-                    + Each request should convey all state required to process the request
-                    + Given a state and request, the server will determine the next state and generate a response
+                    ## Communicating State
+                    * If the client needs to carry forward state from one request to another, use links
+                    * Encode application state into URIs (small size)
+                    * If state is large or can't be transported for security or privacy reasons, store in durable storage (db, filesystem) and encode reference to state in URI
               </script>
               </section>
+
+              <section data-markdown>
+              <script type="text/template">
+                    ## Links Relations
+                    * expressed by <code>rel</code> element
+                    * expressed as URI, such as <code>http://www.example.org/rels/</code>
+                    * provide informational resource such as HTML at the URI, with document describing semantics of link relation. Include details such as HTTP methods supported, representaiton formats supported for requests and responses, and business rules about using the link
+                    * there are a number of common rel types
+              </script>
+              </section>
+
+                            <section data-markdown>
+              <script type="text/template">
+                    ## Common REL types
+                    <table>
+                    <tr>
+                    <td>self</td><td>For links to preferred URI of this resource</td></tr>
+                    <tr>
+                    <td>alternate</td><td>For links to URI for alternate version of same resource</td></tr>
+                    <tr>
+                    <td>edit</td><td>Link to URI for clients to edit this resource</td></tr>
+                    <tr>
+                    <td>related</td><td>Link to a related resource</td></tr>
+                    <tr>
+                    <td>previous or next</td><td>Link to previous or next resource in an ordered series of resources</td></tr>   
+                    <tr>
+                    <td>first or last</td><td>Link to first or last resource in an ordered series of resources</td></tr>
+                    </table>
+              </script>
+              </section>
+
+              <section>
+              #State Transfer Example1 Part1
+<pre><code>              
+# Request
+POST /quotegen HTTP/1.1
+Host: www.example.org
+Content-Type: application/x-www-form-urlencoded
+
+fname=...&lname=...&..
+
+# Response
+HTTP/1.1 200 OK
+Content-Type: application/xml;charset=UTF-8
+&lt;quote xmlns:atom="http://www.w3.org/2005/Atom"&gt;
+  &lt;driver&gt;
+    ...
+  &lt;/driver&gt;
+  &lt;vehicle&gt;
+    ...
+  &lt;/vehicle&gt;
+  &lt;offer&gt;
+    ...
+    &lt;valid-until&gt;2009-10-02&lt;/valid-until&gt;
+    &lt;atom:link href="http://www.example.org/quotes/buy?quote=abc1234"
+          rel="http://www.example.org/rels/quotes/buy"/&gt; 
+  &lt;/offer&gt;
+&lt;/html&gt; 
+</code></pre>
+              </section>
+
+<section>
+              State Transfer Example1 Part2
+<pre><code>              
+# Request
+POST /quotegen HTTP/1.1
+Host: www.example.org
+Content-Type: application/x-www-form-urlencoded
+
+fname=...&lname=...&..
+
+# Response
+HTTP/1.1 200 OK
+Content-Type: application/xml;charset=UTF-8
+&lt;quote xmlns:atom="http://www.w3.org/2005/Atom"&gt;
+  &lt;driver&gt;
+    ...
+  &lt;/driver&gt;
+  &lt;vehicle&gt;
+    ...
+  &lt;/vehicle&gt;
+  &lt;offer&gt;
+    ...
+    &lt;valid-until&gt;2009-10-02&lt;/valid-until&gt;
+    &lt;atom:link href="http://www.example.org/quotes/buy?quote=abc1234"
+          rel="http://www.example.org/rels/quotes/buy"/&gt; 
+  &lt;/offer&gt;
+&lt;/html&gt; 
+</code></pre>
+              </section>
+
+              <section>
+              <h2>Example 2: Hiring System, Part 1</h2>
+<table>
+<tr><td><strong>URI</strong></td><td><strong>Purpose</strong></td></tr>
+<tr><td>http://www.example.org/hires</td><td>Create a candidate resource</td></tr>
+<tr><td>  http://www.example.org/hires/{id}/refs  </td><td>Submit reference comments.</td></tr>
+<tr><td>  http://www.example.org/hires/{id}/bgchecks  </td><td>Submit background check results.</td></tr>
+<tr><td>  http://www.example.org/hires/{id}/hire  </td><td>Make an offer.</td></tr>
+<tr><td> http://www.example.org/hires/{id}/no-hire </td><td>Do not make an offer.</td></tr>
+</table>
+
+              </section>
+
+                            <section>
+              <h2>Example 2: Hiring System, Part 2</h2>
+<pre><code>
+# Request to enter candidate info
+POST /hires HTTP/1.1
+Host: www.example.org
+Content-Type: application/json
+
+{
+  "name": "Joe Prospect",
+  ...
+}
+
+# Response containing a link to post reference checks
+HTTP/1.1 201 Created
+Location: http://www.example.org/hires/099
+Content-Location: http://www.example.org/hires/099
+Content-Type: application/json
+
+{
+  "name": "Joe Prospect",
+  "id": "urn:example:hr:hiring:099",
+  ...
+  "link" : { 
+    "rel" : "http://www.example.org/rels/hiring/post-ref-result",
+    "href" : "http://www.example.org/hires/099/refs"
+  }
+}
+</code></pre>
+
+              </section>
+
+
+<section>
+<h2>Example 2: Hiring System, Part 3</h2>
+<pre><code>
+# Request to enter first reference comment
+POST /hires/099/refs HTTP/1.1
+Host: www.example.org
+Content-Type: application/json
+
+{
+  "text" : "Joe is a ...",
+  "by" : "...",
+  "on" : "2009:10:12T16:05:00Z"
+}
+
+# Response
+HTTP/1.1 200 OK
+Content-Location: http://www.example.org/hires/099
+Content-Type: application/json
+
+{
+  "name": "Joe Prospect",
+  "id": "urn:example:hr:hiring:099",
+  ...
+  "link" : {
+    "rel" : "http://www.example.org/rels/hiring/post-ref-result",
+    "href" : "http://www.example.org/hires/099/refs"
+  }
+}
+
+# Request to enter second reference comment
+POST /hires/099/refs HTTP/1.1
+Host: www.example.org
+Content-Type: application/json
+
+{
+  "text" : "Worked with Joe, ...",
+  "by" : "...",
+  "on" : "2009:10:12T17:00:00Z"
+}
+
+# Response
+HTTP/1.1 200 OK
+Content-Location: http://www.example.org/hires/099
+Content-Type: application/json
+
+{
+  "name": "Joe Prospect",
+  "id": "urn:example:hr:hiring:099",
+  "refs": ...,
+  ...
+  "links" : [{ 
+      "rel" : "http://www.example.org/rels/hiring/add-ref-result",
+      "href" : "http://www.example.org/hires/099/refs"
+    },
+    { 
+      "rel" : "http://www.example.org/rels/hiring/add-background-check",
+      "href" : "http://www.example.org/hires/099/bgchecks"
+    }]
+} 
+
+</code></pre>
+
+
+</section>
+
+<section>
+<h2>Example 2: Hiring System, Part 4</h2>
+<pre><code>
+# Request to submit background check results
+POST /hires/099/bgchecks HTTP/1.1
+Host: www.example.org
+Content-Type: application/json
+{
+  "text" : "...",
+  "by" : "...",
+  "on" : "..."
+}
+
+# Successful background check
+HTTP/1.1 200 OK
+Content-Location: http://www.example.org/hires/099
+Content-Type: application/json;charset=UTF-8
+
+{
+  "prospect" : {
+    "name": "Joe Prospect",
+    "id": "urn:example:hr:hiring:099",
+    "refs": ...,
+    "link" : { 
+      "rel" : "http://www.example.org/rels/hiring/make-offer",
+      "href" : "http://www.example.org/hires/099/hire"
+    }
+  }
+} 
+</code></pre>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
               <section data-markdown>
               <script type="text/template">
@@ -231,6 +504,7 @@
                   + Content Negotion
                     * Content type specified in the request
                     * HTTP Header (accept type)
+                  + Recommend using URL over content negotiation for easy comprehension
                 * Use camel-case naming conventions for JSON attributes
                   + e.g. 'createdAt' rather than 'CreatedAt' or 'created_at'
                   + why? because you can use the . ('dot') operator
@@ -241,7 +515,20 @@
               <section data-markdown>
               <script type="text/template">
                 ## Errors
-                * Errors sent using HTTP response codes
+                * Use appropriate status code and message
+                * [HTTP 4XX Error Status Code (integer)](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+                * Error messages (text) describing the problem
+                * Twilio Example
+<pre><code data-trim>                  
+&lt;TwilioResponse&gt;
+&lt;RestException&gt;
+&lt;Status&gt;401&lt;/Status&gt;
+&lt;Message&gt;Authentication Error - No credentials provided&lt;/Message&gt;
+&lt;Code&gt;20003&lt;/Code&gt;
+&lt;MoreInfo&gt;https://www.twilio.com/docs/errors/20003&lt;/MoreInfo&gt;
+ &lt;/RestException&gt;
+&lt;/TwilioResponse&gt;
+</code></pre>
               </script>
               </section>
 
