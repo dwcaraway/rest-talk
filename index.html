@@ -42,29 +42,32 @@
 				<section>
 					<h1>Pragmatic REST</h1>
           <h2>By Dave Caraway</h2>
-					<p>
-						<small>
+          <p>
+            <small>
               <a href="mailto:dave@fogmine.com">dave@fogmine.com</a></small>
-					</p>
-				</section>
+            </p>
+          </section>
 
-        <section>
-              <section data-markdown>
-                  <script type="text/template">
-                    # What is REST?
-                  </script>
-              </section> 
+          <section>
+            <section data-markdown>
+              <script type="text/template">
+              # What is REST?
+              </script>
+            </section> 
 
               <section data-markdown>
               <script type="text/template">
                     ## REST
                     * Stands for Representational State Transfer
-                    * Is a convention for architecting web services, NOT a technology
+                    * A software architecture for distributed hypermedia systems, NOT a software package, protocol or specific technology
                     * Built around the concept of resources, which are just sources of information on the web
                     * Involves sessionless dialogs using state transfer and standard HTTP methods
+                    * Models an application as engine that moves from state to stte by alternative transitions
+                      + State: where user currently is (current resource)
+                      + Transitions: instructions on user's next steps (e.g. links / forms from current resources to others) 
                     * Based on idea that a good design will indicate its own use, which reduces developer reliance on documentation
-                    * Conventions enable reusable libraries and tools
-                    * Allows new developers to start using an API almost immediately
+                      + Enables reusable libraries and tools
+                      + Allows new developers to start using an API almost immediately
               </script>
               </section>
 
@@ -210,17 +213,30 @@
 
               <section data-markdown>
               <script type="text/template">
-                    ## Links Relations
-                    * expressed by <code>rel</code> element
-                    * expressed as URI, such as <code>http://www.example.org/rels/</code>
+                    ## [Links Relations](http://www.iana.org/assignments/link-relations/link-relations.xhtml)
+                    * expressed by <code>rel</code> parameter of a link
+                    * expressed as URI, such as <code>http://www.example.org/rels/</code> or registered name (e.g. rel="stylesheet")
                     * provide informational resource such as HTML at the URI, with document describing semantics of link relation. Include details such as HTTP methods supported, representaiton formats supported for requests and responses, and business rules about using the link
                     * there are a number of common rel types
+                    * Relations fit in [two categories](http://tools.ietf.org/html/rfc5988#section-4)
+                      + Registered
+                        * Compare character by character
+                        * Case insensitive
+                        * MUST NOT constrain the available representation media type
+                        * Can specify behaviors and properties (can specify the
+   behaviours and properties of the target resource (e.g., allowable
+   HTTP methods, request and response media types that must be
+   supported).)
+                      + Extension
+                        * URI that uniquely identifies the relation type
+                        * Can also be expressed as a [Curie](http://www.w3.org/TR/2009/CR-curie-20090116/) or other format that can be converted to URI
+                        * Points to definition of semantics of the relation type
               </script>
               </section>
 
                             <section data-markdown>
               <script type="text/template">
-                    ## Common REL types
+                    ## Common Registered Link Relations
                     <table>
                     <tr>
                     <td>self</td><td>For links to preferred URI of this resource</td></tr>
@@ -486,10 +502,11 @@ Content-Type: application/json;charset=UTF-8
               <section data-markdown>
               <script type="text/template">
                 ## Limiting Results
-                * Use field specification to limit fields returned
+                * Use field specification in URL to limit fields returned
                   + TODO add example
                 * Pagination
-                  + TODO add example
+                  + Use link headers [(see RFC)](http://tools.ietf.org/html/rfc5988)
+                    + [Example (blog post)](http://blog.steveklabnik.com/posts/2011-08-07-some-people-understand-rest-and-http)
               </script>
               </section>
 
@@ -515,8 +532,8 @@ Content-Type: application/json;charset=UTF-8
               <section data-markdown>
               <script type="text/template">
                 ## Errors
-                * Use appropriate status code and message
-                * [HTTP 4XX Error Status Code (integer)](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+                * Use appropriate non-2xx status code and message
+                * [HTTP Error Status Code (integer)](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
                 * Error messages (text) describing the problem
                 * Twilio Example
 <pre><code data-trim>                  
@@ -540,105 +557,57 @@ Content-Type: application/json;charset=UTF-8
                   + Version the URL
                     * api/v1/foo
                     * see https://api.twilio.com/
-                  + Put versions in headers
-                    * see
-                * Best practice: mix & match
-                  + major revisions in URL
-                  + minor revisions in headers
+                  + [Use Accepts header and a MIME type](http://barelyenough.org/blog/2008/05/versioning-rest-web-services/) like application/yourcompany.v1+json
               </script>
               </section>
 
               <section data-markdown>
               <script type="text/template">
                 ## Authentication
-                * Always use SSL (TODO provide why and example/counter-example)
-                * Can use http basic
-                * Recommend OAuth 2.0
+                * Always use SSL
+                * Options:
+                  + HTTP Basic
+                  + OAuth via an Authentication Header
+                  + Via parameter
+                * Can have multiple authentication types supported (Github API supports all of the above)
               </script>
               </section>
-        </section>
 
-            <section>
-               <section data-markdown>
-               <script type="text/template">
-                # How do I design using REST?
-               </script>
-               </section>
-            </section>
 
-            <section>
-                   <section data-markdown>
-                   <script type="text/template">
-                      # What are some helpful tools for REST?
-                   </script>
-                   </section>
-
-                    <section data-markdown>
-                    <script type="text/template">
-                      ## Documentation
-                      * Often the first thing checked by a developer
-                      * No docs usually indicates a rough or unfinished product (even though with REST, documentation isn't nearly as important as with less standardized interfaces)
-                    </script>
-                    </section>
-
-                    <section data-markdown>
-                    <script type="text/template">
-                      ## Swagger
-                      * Often the first thing checked by a developer
-                      * 
-                    </script>
-                    </section>
-
-                    <section data-markdown>
-                    <script type="text/template">
-                      ## Code libraries and SDKs
-                      * # TODO #
-                    </script>
-                    </section>
-
-                    <section data-markdown>
-                    <script type="text/template">
-                      ## REST Client
-                      * Browser
-                        + Advanced REST Client (Chrome)
-                        + ??? (Firefox)
-                        + ??? (IE)
-                        + ??? (Safari)
-
-                    </script>
-                    </section>
-
-            </section>
-            
-            <section>
-               <section data-markdown>
-               <script type="text/template">
-                  # What are some good example REST services?
-               </script>
-               </section>
-
-               <section data-markdown>
-               <script type="text/template">
-                  ## Interesting Projects
-                  * [Twitter](http://www.twitter.com/api)
-                  * [Github](http://www.github.com/api)
-                  * [How to Turn a Raspberry Pi into a Low-Power NAS](http://www.howtogeek.com/139433/how-to-turn-a-raspberry-pi-into-a-low-power-network-storage-device/)
-                  * [Turning the Raspberry Pi Into an FM Transmitter](http://www.icrobotics.co.uk/wiki/index.php/Turning_the_Raspberry_Pi_Into_an_FM_Transmitter)
-                  * [用 Raspberry Pi 打造真正的豆瓣FM](http://www.freemindworld.com/blog/2013/130218_douban_fm_with_raspberry_pi.shtml)
-               </script>
-               </section>
-
-            </section>
-           
-            <section>
-
-               <section data-markdown>
-                 <script type="text/template">
-                    # What is hypermedia?
-                 </script>
+              <section>
+                ## [Richardson Maturity Model](http://martinfowler.com/articles/richardsonMaturityModel.html)
+                * 99.99% of "REST" APIs aren't REST
+                * Four levels
+                  + Level 0: Swamp of POX -- Few endpoints, use HTTP transport as tunneling mechanism for RPC style invocations
+                  + Level 1: Resources -- Communicate to resources
+                  + Level 2: HTTP Verbs -- Get out of the box in Rails or similar framework
+                  + Level 3: Hypermedia Controls -- Zen! You've reached HATEOAS
+                * [HATEOAS: Hypertxt as The Engine of Application State](http://timelessrepo.com/haters-gonna-hateoas)
+                        People would consider it ludicrous if they had to remember a dozen URLs to navigate a website, so why do we expect the consumers of our APIs to do so as well?
               </section>
 
-               <section data-markdown>
+              <section>
+                ## [Why HATEOAS](http://www.slideshare.net/trilancer/why-hateoas-1547275)
+                * Resources evolve over time
+                  + Naming, URI, location, partition
+                * Assumptions about server resources break eventually
+                  + URI pattern, valid state transitions
+                * HATEOAS reduces assumptions
+                  + Loose coupling between client & server
+                  + Allow both to evolve independently
+                * Caveat: loose coupling does mean less efficiency (transport or otherwise)
+                * Not using HATEOAS: If you're absolutely sure something will never change(e.g. /login) then let everyone assume it forever
+              </section>
+
+              <section>
+                ## [Standards versus Pragmatism](http://blog.steveklabnik.com/posts/2011-08-07-some-people-understand-rest-and-http)
+                * Engineering is the art of proper trade-offs: there's times when it's not the right decision to follow the specification
+                  + Choosing a non-standard way due to informed decision is totally okay
+                  + Making a decision based on ignorance is not okay
+                * There are lots of other valid architectures and REST isn't the best for all situations (e.g. real-time requirements) 
+              </section>
+
+                           <section data-markdown>
                  <script type="text/template">
                     ## Hypermedia
                     * Per Fielding, required for "REST"
@@ -702,8 +671,89 @@ Content-Type: application/json;charset=UTF-8
                     * Drawback: any independent client would have great difficulty keeping up with changes
                  </script>
              </section>
-          </section>
+        </section>
 
+            <section>
+               <section data-markdown>
+               <script type="text/template">
+                # How do I design using REST?
+               </script>
+               </section>
+            </section>
+
+            <section>
+                   <section data-markdown>
+                   <script type="text/template">
+                      # What are some helpful tools for REST?
+                   </script>
+                   </section>
+
+                    <section data-markdown>
+                    <script type="text/template">
+                      ## Documentation
+                      * Often the first thing checked by a developer
+                      * No docs usually indicates a rough or unfinished product (even though with REST, documentation isn't nearly as important as with less standardized interfaces)
+                    </script>
+                    </section>
+
+                    <section data-markdown>
+                    <script type="text/template">
+                      ## Swagger
+                      * Often the first thing checked by a developer
+                      * 
+                    </script>
+                    </section>
+
+                    <section data-markdown>
+                    <script type="text/template">
+                      ## Code libraries and SDKs
+                      * # TODO #
+                    </script>
+                    </section>
+
+                    <section data-markdown>
+                    <script type="text/template">
+                      ## REST Client
+                      * Browser
+                        + Advanced REST Client (Chrome)
+                        + ??? (Firefox)
+                        + ??? (IE)
+                        + ??? (Safari)
+
+                    </script>
+                    </section>
+
+            </section>
+            
+            <section>
+               <section data-markdown>
+               <script type="text/template">
+                  # How can I learn more about REST?
+               </script>
+               </section>
+
+               <section data-markdown>
+               <script type="text/template">
+                  ## Study Examples
+                  * [Twitter](http://www.twitter.com/api)
+                  * [Github](http://www.github.com/api)
+                  * [CIMI, a nice hypermedia-based REST design](http://dmtf.org/sites/default/files/standards/documents/DSP0263_1.0.1.pdf) 
+               </script>
+               </section>
+
+            <section data-markdown>
+               <script type="text/template">
+                  ## Reading / Videos
+                  * [RestFest Videos](http://vimeo.com/channels/restfest2013)
+                  * Mark Nottingham posts on 
+                    + [why to consider linking an HTTP API](http://www.mnot.net/blog/2013/06/23/linking_apis)
+                    + [HTTP API Complexity](http://www.mnot.net/blog/2012/06/25/http_api_complexity_model) 
+                  * [JSON Home, a homepage for HTTP APIs](http://tools.ietf.org/html/draft-nottingham-json-home-03)
+               </script>
+            </section>
+
+
+            </section>
 
            <section data-markdown>
              <script type="text/template">
