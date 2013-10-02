@@ -362,28 +362,61 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## [Safe Methods and Idempotence](http://restcookbook.com/HTTP%20Methods/idempotency/)
-                        * Safe Methods
-                            + should never change a resource representation on the server
-                            + GET and HEAD are safe methods
-                        * Idempotence
-                            + property that N>0 identical requests yields the same result as initial application
-                            + `a=4;` is idempotent
-                            + `a++;` is not idempotent
-                            + GET, HEAD, PUT and DELETE are idempotent
-                            + POST and PATCH are not idempotent
+                        ## Safe Methods
+
+                        * should never change a resource representation on the server
+                        * GET and HEAD are safe methods
                     </script>
                 </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## [Idempotence](http://restcookbook.com/HTTP%20Methods/idempotency/)
+
+                        * property that N>0 identical requests yields the same result as initial application
+                        * `a=4;` is idempotent
+                        * `a++;` is not idempotent
+                        * GET, HEAD, PUT and DELETE are idempotent
+                        * POST and PATCH are not idempotent
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Idempotence is pretty important.
+
+                        It says why you shouldn't insert data using a GET method
+                    </script>
+                </section>
+
 
                 <section data-markdown>
                     <script type="text/template">
                         ## Query Strings
                         * filters
                         * boolean operators
-                        * http://www.petshop.com/cats?name=fluffy&color=black&age%3C1&order=1
+
+                                http://www.petshop.com/cats?name=fluffy&color=black&age=6&order=1
+
                         * query
                         * full text search
-                        * http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
+
+                                http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## [URL Encodings](http://www.w3schools.com/tags/ref_urlencode.asp)
+                        * URLs only support the ASCII character-set
+                        * Unsafe characters are replaced with a % followed by two hexadecimal digits (0..F)
+                        * Can't contain spaces, replaces with + sign
+
+                                #Filter for cats named Günter with black fur, age 6
+                                http://www.petshop.com/cats?name=G%FCnter&color=black&age=6
+
+                                #Search books for "fluffy black kitten"
+                                http://www.petshop.com/books?q=fluffy+black+kitten
                     </script>
                 </section>
 
@@ -555,6 +588,13 @@
                     <script type="text/template">
                         ## You have to identify yourself and your resource, every time
                         (some overhead, but helps your API scale)
+                    </script>
+              </section>
+
+              <section data-markdown>
+                    <script type="text/template">
+                        ## Identity often provided using API key
+
                     </script>
               </section>
 
