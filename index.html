@@ -72,7 +72,7 @@
 
             <section data-markdown>
               <script type="text/template">
-                http://www.foo.com/index.php?action=bar&color=red
+                ***http://www.foo.com/index.php?action=bar&color=red***
               </script>
             </section>
 
@@ -91,7 +91,7 @@
 
             <section data-markdown>
               <script type="text/template">
-                http://www.foo.com/bar/red
+                ***http://www.foo.com/bar/red***
               </script>
             </section>
 
@@ -109,13 +109,13 @@
 
             <section data-markdown>
               <script type="text/template">
-                http://foo.com/hamburgers/latest/videos
+                ***http://foo.com/hamburgers/latest/videos***
               </script>
             </section>
 
             <section data-markdown>
               <script type="text/template">
-                http://foo.com/search/cats/grumpy/video/yes/i/349
+                ***http://foo.com/search/cats/grumpy/video/yes/i/349***
               </script>
             </section>
 
@@ -167,8 +167,36 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        * A software architecture for distributed hypermedia systems, NOT a software package, protocol or specific technology
-                        * Built around the concept of resources, which are just sources of information on the web
+                        ## REST
+                        * software architecture for distributed hypermedia systems
+                        * **NOT** a software package, protocol or specific technology
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Source
+                        * Originated in chapter 5 of [Roy Fielding's Ph. D. Dissertation](http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)
+                        * Fielding's description left many unanswered questions, resulting in contention over what is and is not REST
+                        * Many sources of information on REST have been informal: mailing lists, wikis and weblogs
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Intuition
+                        * Based on idea that a good design will indicate its own use
+                        * Reduces developer reliance on documentation
+                        + Enables reusable libraries and tools
+                        + Allows new developers to start using an API almost immediately
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Resources are the building blocks of REST
+
+                        These are just sources of information on the web
                     </script>
                 </section>
 
@@ -196,7 +224,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## and get a response like this
+                        ## and receive a response like this
                     </script>
                 </section>
 
@@ -205,6 +233,7 @@
                         ### Response Header ##
                             Content-Type: application/json
                             Content-Length: 119
+                            ...
 
                         ### Response Body ###
                             {
@@ -225,13 +254,13 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## Functions and services can also be called...
+                        ## Resources can also be nested...
                     </script>
                 </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## So you can do something like this
+                        ## So you can have a call like this
                     </script>
                 </section>
 
@@ -242,7 +271,7 @@
 
                         ## Request Header ##
 
-                            GET /foxes/22/say
+                            GET /foxes/sounds
                     </script>
                 </section>
 
@@ -275,104 +304,96 @@
                 </section>
 
 
-              <section data-markdown>
-              <script type="text/template">
-                    * Involves sessionless dialogs using state transfer and standard HTTP methods
-                    * Models an application as engine that moves from state to state by alternative transitions
-                      + State: where user currently is (current resource)
-                      + Transitions: instructions on user's next steps (e.g. links / forms from current resources to others) 
-              </script>
-              </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Finite State Machine Model
+                        * Applications modeled as engine that moves from state to state by alternative transitions
+                            + State: where user currently is (current resource)
+                            + Transitions: instructions on user's next steps (e.g. links / forms from current resources to others)
+                    </script>
+                </section>
 
               <section data-markdown>
               <script type="text/template">
-                    * Based on idea that a good design will indicate its own use, which reduces developer reliance on documentation
-                      + Enables reusable libraries and tools
-                      + Allows new developers to start using an API almost immediately
+                    ## Dialogs in REST are stateless
+                    * Require full state transfer
+                    * Use standard HTTP methods
+                        + Basics: GET, PUT, POST, DELTE
+                        + Sometimes: HEAD, PATCH
+
               </script>
               </section>
 
-              <section data-markdown>
-              <script type="text/template">
-                    ## Source
-                    * Originated in chapter 5 of [Roy Fielding's 2000 Ph. D. Dissertation](http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)
-                    * Fielding's REST is not an architecture but a way of judging architectures
-                    * Fielding description left many unanswered questions, resulting in contention over what is and is not REST
-                    * Many sources of information on REST have been informal: mailing lists, wikis and weblogs
-              </script>
-              </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ## [HTTP](http://www.w3.org/Protocols/)
+                        * Hypertext Transfer Protocol
+                        * A request-response architecture
+                        + client provides request method, URI and protocol version followed by message with request modifiers, client information and (possibly) body content
+                        + Server responds with status code, (possibly) response body
+                        * Building block of the Internet as we know it
+                        * Normally over TCP/IP transport protocol, but can support others as long as they are reliable
+                        * Headers are visible, body is encoded in an envelope with associated Content-Type
+                        * Trivia note: Fielding co-wrote the HTTP standard
+                    </script>
+                </section>
 
-              <section data-markdown>
-              <script type="text/template">
-                ## [HTTP](http://www.w3.org/Protocols/)
-                * Hypertext Transfer Protocol
-                * A request-response architecture
-                  + client provides request method, URI and protocol version followed by message with request modifiers, client information and (possibly) body content
-                  + Server responds with status code, (possibly) response body
-                * Building block of the Internet as we know it
-                * Normally over TCP/IP transport protocol, but can support others as long as they are reliable
-                * Headers are visible, body is encoded in an envelope with associated Content-Type
-                * Trivia note: Fielding co-wrote the HTTP standard
-              </script>
-              </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ## CRUD
+                        * Uses HTTP methods
+                        + POST (Create)
+                        + GET (Read)
+                        + PUT (Update)
+                        + DELETE (Delete)
+                        * PUT can sometimes be used  to create if the API Allows
+                        + PUT /some/resource/{requestedid} should create a new resource at the requested URI if supported
+                        * HTML only supports GET and POST
+                    </script>
+                </section>
 
-              <section data-markdown>
-              <script type="text/template">
-                ## CRUD 
-                * Uses HTTP methods
-                  + POST (Create)
-                  + GET (Read)
-                  + PUT (Update)
-                  + DELETE (Delete)
-                * PUT can sometimes be used  to create if the API Allows
-                  + PUT /some/resource/{requestedid} should create a new resource at the requested URI if supported  
-                * HTML only supports GET and POST
-              </script>
-              </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Other HTTP methods
+                        * PATCH
+                        + Partial update, not requiring full representation (and thus less bandwidth)
+                        + Caveat: not idempotent and some clients do not support patch
+                        * OPTIONS
+                        + Indicates what HTTP methods can be used on a given resource
+                        + May include a response body, although HTTP 1.1 doesn't require it
+                        * HEAD
+                        + Like GET, except no response body
+                        + Useful for determining response codes, Content-Type and other header information
+                        * Put everything else behind a ? (in a query string)
+                    </script>
+                </section>
 
-              <section data-markdown>
-              <script type="text/template">
-                ## Other HTTP methods
-                * PATCH
-                  + Partial update, not requiring full representation (and thus less bandwidth)
-                  + Caveat: not idempotent and some clients do not support patch
-                * OPTIONS
-                  + Indicates what HTTP methods can be used on a given resource
-                  + May include a response body, although HTTP 1.1 doesn't require it
-                * HEAD
-                  + Like GET, except no response body
-                  + Useful for determining response codes, Content-Type and other header information 
-                * Put everything else behind a ? (in a query string)
-              </script>
-              </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ## [Safe Methods and Idempotence](http://restcookbook.com/HTTP%20Methods/idempotency/)
+                        * Safe Methods
+                        + should never change a resource representation on the server
+                        + GET and HEAD are safe methods
+                        * Idempotence
+                        + property that N>0 identical requests yields the same result as initial application
+                        + `a=4;` is idempotent
+                        + `a++;` is not idempotent
+                        + GET, HEAD, PUT and DELETE are idempotent
+                        + POST is not idempotent
+                    </script>
+                </section>
 
-             <section data-markdown>
-              <script type="text/template">
-                ## [Safe Methods and Idempotence](http://restcookbook.com/HTTP%20Methods/idempotency/)
-                * Safe Methods
-                  + should never change a resource representation on the server
-                  + GET and HEAD are safe methods
-                * Idempotence
-                  + property that N>0 identical requests yields the same result as initial application
-                  + `a=4;` is idempotent
-                  + `a++;` is not idempotent
-                  + GET, HEAD, PUT and DELETE are idempotent
-                  + POST is not idempotent
-                * Trivia note: Fielding co-wrote the HTTP standard
-              </script>
-              </section>
-
-              <section data-markdown>
-              <script type="text/template">
-                ## Query Strings
-                * filters
-                  * boolean operators
-                  * http://www.petshop.com/cats?name=fluffy&color=black&age%3C1&order=1
-                * query
-                  * full text search
-                  * http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
-              </script>
-              </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Query Strings
+                        * filters
+                        * boolean operators
+                        * http://www.petshop.com/cats?name=fluffy&color=black&age%3C1&order=1
+                        * query
+                        * full text search
+                        * http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
+                    </script>
+                </section>
 
               <section data-markdown>
               <script type="text/template">
@@ -680,21 +701,6 @@ Content-Type: application/json;charset=UTF-8
 
 </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               <section data-markdown>
               <script type="text/template">
                 ## URLs
@@ -897,50 +903,72 @@ Content-Type: application/json;charset=UTF-8
             <section>
                <section data-markdown>
                <script type="text/template">
-                # How do I design using REST?
+                # Let's Design
+                ![Alt Design bed image](images/cartoon-bed-med.jpg)
                </script>
                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        # Identify Resources
+
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        # Create a transition diagram
+                        ![Alt Transition Diagram](images/api_states_and_transitions.png)
+                    </script>
+                </section>
+
+
             </section>
 
             <section>
                    <section data-markdown>
                    <script type="text/template">
                       # What are some helpful tools for REST?
+                      ![Alt tools](images/Tools_clipart.jpg)
                    </script>
                    </section>
 
                     <section data-markdown>
                     <script type="text/template">
                       ## Documentation
-                      * Often the first thing checked by a developer
-                      * No docs usually indicates a rough or unfinished product (even though with REST, documentation isn't nearly as important as with less standardized interfaces)
-                    </script>
-                    </section>
-
-                    <section data-markdown>
-                    <script type="text/template">
-                      ## Swagger
-                      * Often the first thing checked by a developer
-                      * 
+                      * Swagger
+                      * Apiary
+                      * Apigee
                     </script>
                     </section>
 
                     <section data-markdown>
                     <script type="text/template">
                       ## Code libraries and SDKs
-                      * # TODO #
+                      * Ruby
+                        + Rails
+                        + Sinatra
+                      * Javascript
+                        + Express.js
+                      * Java
+                        + Jersey
+                        + Restlet
+                      * Python
+                        + Flask
+                        + Django
+                        + Bottle
+
                     </script>
                     </section>
 
                     <section data-markdown>
                     <script type="text/template">
-                      ## REST Client
+                      ## Misc
                       * Browser
                         + Advanced REST Client (Chrome)
-                        + ??? (Firefox)
-                        + ??? (IE)
-                        + ??? (Safari)
-
+                      * Curl
+                      * HAL Browser (for Hypermedia APIs)
+                      * [online JSON Editor](http://www.jsoneditoronline.org/)
                     </script>
                     </section>
 
