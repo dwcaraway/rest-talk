@@ -40,7 +40,7 @@
 	</head>
 
 	<body>
-    <div class="github-fork-ribbon-wrapper left-bottom">
+    <div class="github-fork-ribbon-wrapper right">
         <div class="github-fork-ribbon">
             <a href="https://github.com/dwcaraway/rest-talk">Fork me on GitHub</a>
         </div>
@@ -407,15 +407,16 @@
                 <section data-markdown>
                     <script type="text/template">
                         ## Query Strings
-                        * filters
-                        * boolean operators
+                        * multiple parameters joined by '&'
+                        * filters (boolean operators)
 
                                 http://www.petshop.com/cats?name=fluffy&color=black&age=6&order=1
 
-                        * query
-                        * full text search
+                        * query (full text search)
+                            + usually starts with 'q'
 
-                                http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
+                                    http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
+
                     </script>
                 </section>
 
@@ -584,6 +585,14 @@
                     </script>
                 </section>
 
+               <section data-markdown>
+                    <script type="text/template">
+                        ## Finite State Diagram
+
+                        ![Alt finite state machine](images/state_machine.gif)
+                    </script>
+               </section>
+
               <section data-markdown>
               <script type="text/template">
                     ## Dialogs in REST are stateless
@@ -594,25 +603,23 @@
 
               <section data-markdown>
                     <script type="text/template">
-                        ## Every state has a URL
+                        ## States
+                        * This means that every request made to the API should contain everything the application needs to service the request
+                        * Client should be given a few (lets say, less than 10) well published endpoints from which the API can be navigated
+                        * Client should not store anything that isn't well published endpoint
+                            + URLs could be changed by service provider
+
                     </script>
               </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## You have to identify yourself and your resource, every time
-                        (some overhead, but helps your API scale)
+                        ## States & Transitions
+                        * Given a state and request, the server will determine the next state and generate a response
                     </script>
-              </section>
+                </section>
 
-              <section data-markdown>
-                    <script type="text/template">
-                        ## Identity often provided using API key
-
-                    </script>
-              </section>
-
-              <section data-markdown>
+               <section data-markdown>
               <script type="text/template">
                 ## Example HTTP Request & Response
                   [Twilio API](https://api.twilio.com/2010-04-01)
@@ -649,17 +656,6 @@
                   </code></pre>
               </script>
               </section>
-
-              <section data-markdown>
-              <script type="text/template">
-                    ## State
-                    * Server is stateless
-                    * Application state resides on the client
-                    * Each request should convey all state required to process the request
-                    * Given a state and request, the server will determine the next state and generate a response
-              </script>
-              </section>
-
 
               <section data-markdown>
               <script type="text/template">
@@ -711,9 +707,44 @@
                     <td>first or last</td><td>Link to first or last resource in an ordered series of resources</td></tr>
                     </table>
               </script>
-              </section>
 
-              <section>
+              </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ## You have to identify yourself and your resource, every time
+                        (some overhead, but helps your API scale)
+
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Identity often provided using API key
+
+                        * Auth SID  = asdflkjalsdf20938092340923049
+                        * Auth TOKEN (another long number)
+                        * Commonly uses [HTTP Basic Auth](http://en.wikipedia.org/wiki/Basic_access_authentication) over HTTPS
+
+                                # Call to https://{AccountSid}:{AuthToken}@api.twilio.com/2010-04-01/Accounts
+                                POST /2010-04-01/Accounts/{TestAccountSid}/SMS/Messages
+                    </script>
+                </section>
+
+            <section data-markdown>
+                <script type="text/template">
+                    ## Stateless No Nos:
+
+                    ![Alt Cookie Monster](images/cookiemonster.jpg)
+
+                    * ***DO NOT*** Store state in cookies
+                    * ***DO NOT*** create or rely on sessions
+                    * ***DO NOT*** store auth tokens in the cookie
+
+                </script>
+            </section>
+
+
+                <section>
               #State Transfer Example1 Part1
 <pre><code>              
 # Request
@@ -918,22 +949,43 @@ Content-Type: application/json;charset=UTF-8
 
 </section>
 
-              <section data-markdown>
-              <script type="text/template">
-                ## URLs
-                * based on nouns, not verbs
-                * two urls per resource
-                  + collection (e.g. /polls )
-                  + element in collection (e.g. /polls/{id})
-                * Prefer plural over singular nouns for collections
-                  + /polls, /birds, /aardvarks rather tha
-                * Prefer concrete over abstract names
-                  + /dog rather than /pet
-                * For non-resources, use verbs not nouns
-                  * e.g. /convert or /render
-                * Moving content: redirects and permant move codes
-              </script>
-              </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Designing Resource Names
+                        * based on nouns, not verbs
+                        * two urls per resource
+                            + collection (e.g. /polls )
+                            + element in collection (e.g. /polls/{id})
+                   </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Designing Resource Names
+                        * Prefer plural over singular nouns for collections
+
+                                /polls
+                                /birds
+                                /aardvarks
+
+                        rather than
+
+                                /poll
+                                /bird
+                                /aardvark
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Designing Resource Names
+                        * Prefer concrete over abstract names
+                            + /dog rather than /pet
+                        * For non-resources, use verbs not nouns
+                            + e.g. /convert or /render
+                        * Moving content: redirects and permanent move codes
+                    </script>
+                </section>
 
               <section data-markdown>
               <script type="text/template">
@@ -947,9 +999,8 @@ Content-Type: application/json;charset=UTF-8
               <script type="text/template">
                 ## Limiting Results
                 * Use field specification in URL to limit fields returned
-                  + TODO add example
                 * Pagination
-                  + Use link headers [(see RFC)](http://tools.ietf.org/html/rfc5988)
+                    + Use link headers [(see RFC)](http://tools.ietf.org/html/rfc5988)
                     + [Example (blog post)](http://blog.steveklabnik.com/posts/2011-08-07-some-people-understand-rest-and-http)
               </script>
               </section>
@@ -959,19 +1010,30 @@ Content-Type: application/json;charset=UTF-8
                 ## Format
                 * REST is independent of Format
                 * Most REST apis are JSON, XML, or HTML, but RSS, ATOM and other formats are just as viable
-                * Ways of indicating prefered format
-                  + Included as part of the URL   
-                    * e.g. /foo.json or /foo.xml
-                  + Content Negotion
-                    * Content type specified in the request
-                    * HTTP Header (accept type)
-                  + Recommend using URL over content negotiation for easy comprehension
-                * Use camel-case naming conventions for JSON attributes
-                  + e.g. 'createdAt' rather than 'CreatedAt' or 'created_at'
-                  + why? because you can use the . ('dot') operator
-                  + myjson.createdAt rather than myjson['some_bad_name']
               </script>
               </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Format
+                        * Ways of indicating prefered format
+                        + Included as part of the URL
+                        * e.g. /foo.json or /foo.xml
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Format
+                        + Content Negotion
+                            * Content type specified in the request
+                            * HTTP Header (accept type)
+                            * Use camel-case naming conventions for JSON attributes
+                                + e.g. 'createdAt' rather than 'CreatedAt' or 'created_at'
+                                + why? because you can use the . ('dot') operator
+                                + myjson.createdAt rather than myjson['some_bad_name']
+                    </script>
+                </section>
 
               <section data-markdown>
               <script type="text/template">
@@ -1018,8 +1080,19 @@ Content-Type: application/json;charset=UTF-8
               </section>
 
 
+                <section data-markdown>
+                    <script type="text/template">
+                        # STOP HERE >
+
+                        Incomplete slides follow
+                    </script>
+                </section>
+
+
+
               <section>
                 ## [Richardson Maturity Model](http://martinfowler.com/articles/richardsonMaturityModel.html)
+
                 * 99.99% of "REST" APIs aren't REST
                 * Four levels
                   + Level 0: Swamp of POX -- Few endpoints, use HTTP transport as tunneling mechanism for RPC style invocations
