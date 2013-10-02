@@ -96,25 +96,41 @@
             </section>
 
             <section data-markdown>
+                <script type="text/template">
+                    ## Yay! We're done. Any questions?
+                    ![Alt smiley](images/smiley.jpg)
+                </script>
+            </section>
+
+            <section data-markdown>
               <script type="text/template">
-                ## But things got out of hand...
+                ## Things got out of hand...
               </script>
             </section>
 
             <section data-markdown>
               <script type="text/template">
                 ## and pretty inconsistent
+                ![Alt smiley uncertain](images/smiley_uncertain.jpg)
               </script>
             </section>
 
             <section data-markdown>
               <script type="text/template">
+                ## Videos of the latest hamburgers, or just latest hamburger videos?
+
+                  <br><p></p>
                 ***http://foo.com/hamburgers/latest/videos***
+
               </script>
             </section>
 
             <section data-markdown>
               <script type="text/template">
+                ## Search for grumpy cats with videos with...ummmm
+
+                  <br><p></p>
+
                 ***http://foo.com/search/cats/grumpy/video/yes/i/349***
               </script>
             </section>
@@ -122,6 +138,7 @@
             <section data-markdown>
               <script type="text/template">
                 ## Not really intuitive, is it?
+                ![Alt doh](images/smiley_dejected.jpg)
               </script>
             </section>
 
@@ -151,9 +168,13 @@
                 * Complex / Not intuitive
                 * Brittle
                 * Proprietary
-
-                These problems led to adoption of REST
               </script>
+            </section>
+
+            <section data-markdown>
+                <script type="text/template">
+                    The problems led to adoption of HTTP APIs
+                </script>
             </section>
         </section>
 
@@ -170,12 +191,211 @@
                         ## REST
                         * software architecture for distributed hypermedia systems
                         * **NOT** a software package, protocol or specific technology
+                        * Avoids custom protocols, just uses HTTP
                     </script>
                 </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## Source
+                        ## Wait! What's hypermedia?
+                        <br>
+                        Well come back to this topic. First...
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Digression: Some background on HTTP...
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## [HTTP](http://www.w3.org/Protocols/)
+                        * Hypertext Transfer Protocol
+                        * A request-response architecture
+                        * Building block of the Internet as we know it
+                        * Normally over TCP/IP transport protocol, but can support others as long as they are reliable
+                        * Headers are visible, body is encoded in an envelope with associated Content-Type
+                        * ***Trivia***: Fielding co-wrote the HTTP standard
+                        * ***More trivia***: HTTP isn't the most used protocol. Do you know what is? [Answer](http://www.bittorrent.com/)
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## HTTP Request
+                        <br>
+
+                        ### Request Header ###
+
+                        * request method
+                        * URI
+                        * protocol version
+
+                        <br>
+                        ### Request Body ###
+
+                        * request modifiers
+                        * client information
+                        * (possibly) body content
+
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## HTTP Request Example
+                        <br>
+
+                        ## Request ##
+
+                            POST /animals  HTTP/1.1
+
+                        ### Request Header ###
+
+                            User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.66 Safari/537.36
+                            Content-Type: application/json; charset=utf-8
+                            Accept: */*
+                            Accept-Encoding: gzip,deflate,sdch
+                            Accept-Language: en-US,en;q=0.8
+
+                        ### Request Body ###
+
+                            {
+                            "animal": "aardvark",
+                            "description": "wow this thing really likes ants. how cool!"
+                            }
+
+                        <br><br>
+
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## HTTP Response
+
+                        Server responds with status code and (possibly) a response body
+
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## HTTP Response
+
+                        ### Response Header  ###
+
+                            HTTP/1.1 201 CREATED
+                            Date: Wed, 2 Oct 2013 17:59:13 GMT
+                            Server: Apache/1.4.27
+                            Content-Length: 345
+                            Content-Type: application/json
+
+                        ### Response Body ###
+                            {
+                                "id": 194,
+                                "url": "http://foo.com/animals/194",
+                                "animal": "aardvark",
+                                "description": "wow this thing really likes ants. how cool!"
+                            }
+
+
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## CRUD ##
+                        * Uses HTTP methods
+                            + **POST** (Create)
+                            + **GET** (Read)
+                            + **PUT** (Update)
+                            + **DELETE** (Delete)
+                        * HTML only supports **GET** and **POST** [(see forms description)](http://www.w3schools.com/tags/att_form_method.asp)
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## PUT can sometimes be used to create, if the API Allows
+                        <br>
+                        Should create a new resource at the requested URI if supported
+
+                                PUT /some/resource/{requestedid} HTTP/1.1
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Other HTTP methods
+                        * ***PATCH***: Partial update, not requiring full representation (and thus less bandwidth)
+                            + ***Caveat***: not idempotent and some clients do not support patch
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Other HTTP methods
+                        * ***OPTIONS***
+                            + Indicates what HTTP methods can be used on a given resource
+                            + May include a response body, although HTTP 1.1 doesn't require it
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Other HTTP methods
+                        * ***HEAD***
+                            + Like **GET**, except no response body
+                            + Useful for determining response codes, Content-Type and other header information
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Other HTTP methods
+                        Put everything not covered by HTTP method behind a ? (in a ***query string***)
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## [Safe Methods and Idempotence](http://restcookbook.com/HTTP%20Methods/idempotency/)
+                        * Safe Methods
+                            + should never change a resource representation on the server
+                            + GET and HEAD are safe methods
+                        * Idempotence
+                            + property that N>0 identical requests yields the same result as initial application
+                            + `a=4;` is idempotent
+                            + `a++;` is not idempotent
+                            + GET, HEAD, PUT and DELETE are idempotent
+                            + POST and PATCH are not idempotent
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Query Strings
+                        * filters
+                        * boolean operators
+                        * http://www.petshop.com/cats?name=fluffy&color=black&age%3C1&order=1
+                        * query
+                        * full text search
+                        * http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## And back to REST...
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Source of REST
                         * Originated in chapter 5 of [Roy Fielding's Ph. D. Dissertation](http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)
                         * Fielding's description left many unanswered questions, resulting in contention over what is and is not REST
                         * Many sources of information on REST have been informal: mailing lists, wikis and weblogs
@@ -196,13 +416,17 @@
                     <script type="text/template">
                         ## Resources are the building blocks of REST
 
-                        These are just sources of information on the web
+                        * Resources are just sources of information on the web
+                        * They're the ***R*** in U***R***L
+                        * Originally, just static documents and files on the web
+                        * Now anything that can be identified, named, addressed or handled is a resource
+
                     </script>
                 </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## Resources are nouns (usually plural)...
+                        ## In REST, resources are nouns (usually plural)...
                     </script>
                 </section>
 
@@ -288,7 +512,7 @@
                         ### Response Body ###
 
                             {
-                            "sayings": [
+                            "sounds": [
                                 {
                                     "id": 1,
                                     "phrase": "Ring-ding-ding-ding-dingeringeding!"
@@ -307,7 +531,7 @@
                 <section data-markdown>
                     <script type="text/template">
                         ## Finite State Machine Model
-                        * Applications modeled as engine that moves from state to state by alternative transitions
+                        * Applications modeled as an engine that moves from state to state by alternative transitions
                             + State: where user currently is (current resource)
                             + Transitions: instructions on user's next steps (e.g. links / forms from current resources to others)
                     </script>
@@ -316,84 +540,23 @@
               <section data-markdown>
               <script type="text/template">
                     ## Dialogs in REST are stateless
-                    * Require full state transfer
-                    * Use standard HTTP methods
-                        + Basics: GET, PUT, POST, DELTE
-                        + Sometimes: HEAD, PATCH
+                    ![Alt do_i_know_you](images/do-i-know-you.jpg)
 
               </script>
               </section>
 
-                <section data-markdown>
+              <section data-markdown>
                     <script type="text/template">
-                        ## [HTTP](http://www.w3.org/Protocols/)
-                        * Hypertext Transfer Protocol
-                        * A request-response architecture
-                        + client provides request method, URI and protocol version followed by message with request modifiers, client information and (possibly) body content
-                        + Server responds with status code, (possibly) response body
-                        * Building block of the Internet as we know it
-                        * Normally over TCP/IP transport protocol, but can support others as long as they are reliable
-                        * Headers are visible, body is encoded in an envelope with associated Content-Type
-                        * Trivia note: Fielding co-wrote the HTTP standard
+                        ## Every state has a URL
                     </script>
-                </section>
+              </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## CRUD
-                        * Uses HTTP methods
-                        + POST (Create)
-                        + GET (Read)
-                        + PUT (Update)
-                        + DELETE (Delete)
-                        * PUT can sometimes be used  to create if the API Allows
-                        + PUT /some/resource/{requestedid} should create a new resource at the requested URI if supported
-                        * HTML only supports GET and POST
+                        ## You have to identify yourself and your resource, every time
+                        (some overhead, but helps your API scale)
                     </script>
-                </section>
-
-                <section data-markdown>
-                    <script type="text/template">
-                        ## Other HTTP methods
-                        * PATCH
-                        + Partial update, not requiring full representation (and thus less bandwidth)
-                        + Caveat: not idempotent and some clients do not support patch
-                        * OPTIONS
-                        + Indicates what HTTP methods can be used on a given resource
-                        + May include a response body, although HTTP 1.1 doesn't require it
-                        * HEAD
-                        + Like GET, except no response body
-                        + Useful for determining response codes, Content-Type and other header information
-                        * Put everything else behind a ? (in a query string)
-                    </script>
-                </section>
-
-                <section data-markdown>
-                    <script type="text/template">
-                        ## [Safe Methods and Idempotence](http://restcookbook.com/HTTP%20Methods/idempotency/)
-                        * Safe Methods
-                        + should never change a resource representation on the server
-                        + GET and HEAD are safe methods
-                        * Idempotence
-                        + property that N>0 identical requests yields the same result as initial application
-                        + `a=4;` is idempotent
-                        + `a++;` is not idempotent
-                        + GET, HEAD, PUT and DELETE are idempotent
-                        + POST is not idempotent
-                    </script>
-                </section>
-
-                <section data-markdown>
-                    <script type="text/template">
-                        ## Query Strings
-                        * filters
-                        * boolean operators
-                        * http://www.petshop.com/cats?name=fluffy&color=black&age%3C1&order=1
-                        * query
-                        * full text search
-                        * http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
-                    </script>
-                </section>
+              </section>
 
               <section data-markdown>
               <script type="text/template">
@@ -936,9 +1099,12 @@ Content-Type: application/json;charset=UTF-8
                     <section data-markdown>
                     <script type="text/template">
                       ## Documentation
-                      * Swagger
-                      * Apiary
-                      * Apigee
+                      * [Swagger](https://developers.helloreverb.com/swagger/)
+                        + Example: [Petstore](http://petstore.swagger.wordnik.com/#!/pet)
+                      * [Apiary.io](http://apiary.io)
+                        + [Apiary Client - Ruby Gem](https://github.com/apiaryio/apiary-client)
+                      * [IODocs](https://github.com/mashery/iodocs)
+                        + Example: [Rotten Tomatoes](http://developer.rottentomatoes.com/iodocs)
                     </script>
                     </section>
 
@@ -965,10 +1131,20 @@ Content-Type: application/json;charset=UTF-8
                     <script type="text/template">
                       ## Misc
                       * Browser
-                        + Advanced REST Client (Chrome)
-                      * Curl
-                      * HAL Browser (for Hypermedia APIs)
+                        + [Advanced REST Client (Chrome)](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo?hl=en-US)
+                      * [HAL Browser (for Hypermedia APIs)](https://github.com/mikekelly/hal-browser)
                       * [online JSON Editor](http://www.jsoneditoronline.org/)
+                      * Curl (Standard commandline tool)
+
+                        <pre><code>curl -i -H "Content-type: application/json" -X POST http://foo.com/service/comment -d '
+                            {
+                            "nid":"579",
+                            "subject":"Test Subject",
+                            "comment_body": { "und": [ { "value": "Test Comment" } ] }
+                            }
+                            '</code></pre>
+
+
                     </script>
                     </section>
 
@@ -1017,7 +1193,7 @@ Content-Type: application/json;charset=UTF-8
             <section data-markdown>
                 <script type="text/template">
                     ## Joining the hypermedia mailing list
-                    * [Email to join](mailto:hypermedia@librelist.com)
+                    * 1st email will join you to list, [click here](mailto:hypermedia@librelist.com)
 
                 </script>
             </section>
