@@ -1,14 +1,3 @@
-Evolutionary APIs
-=================
-## By Dave Caraway ##
-<br>
-### [Fogmine](http://www.fogmine.com) ###
-[dave@fogmine.com](mailto:dave@fogmine.com)
-
-
-
-
-
 What is REST?
 =============
 ![Alt sleep](images/sleep.jpg)
@@ -18,186 +7,7 @@ REST
 ----
 * software architecture for distributed hypermedia systems
 * **NOT** a software package, protocol or specific technology
-* Avoids custom protocols, just uses HTTP
-
-
-Wait! What's hypermedia?
-------------------------
-<br>
-Well come back to this topic. First...
-
-
-Digression: Some background on HTTP...
---------------------------------------
-
-
-[HTTP](http://www.w3.org/Protocols/)
-------------------------------------
-* Hypertext Transfer Protocol
-* A request-response architecture
-* Building block of the Internet as we know it
-* Normally over TCP/IP transport protocol, but can support others as long as they are reliable
-* Headers are visible, body is encoded in an envelope with associated Content-Type
-* ***Trivia***: Fielding co-wrote the HTTP standard
-* ***More trivia***: HTTP isn't the most used protocol. Do you know what is? [Answer](http://www.bittorrent.com/)
-
-
-HTTP Request
-------------
-<br>
-### Request Header ###
-
-* request method
-* URI
-* protocol version
-
-<br>
-### Request Body ###
-
-* request modifiers
-* client information
-* (possibly) body content
-
-
-HTTP Request Example
---------------------
-<br>
-### Request ###
-
-    POST /animals  HTTP/1.1
-
-### Request Header ###
-
-    User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.66 Safari/537.36
-    Content-Type: application/json; charset=utf-8
-    Accept: */*
-    Accept-Encoding: gzip,deflate,sdch
-    Accept-Language: en-US,en;q=0.8
-
-### Request Body ###
-
-    {
-    "animal": "aardvark",
-    "description": "wow this thing really likes ants. how cool!"
-    }
-
-
-HTTP Response
--------------
-Server responds with status code and (possibly) a response body
-
-
-HTTP Response
--------------
-### Response Header  ###
-
-    HTTP/1.1 201 CREATED
-    Date: Wed, 2 Oct 2013 17:59:13 GMT
-    Server: Apache/1.4.27
-    Content-Length: 345
-    Content-Type: application/json
-
-### Response Body ###
-    {
-        "id": 194,
-        "url": "http://foo.com/animals/194",
-        "animal": "aardvark",
-        "description": "wow this thing really likes ants. how cool!"
-    }
-
-
-CRUD
-----
-* Uses HTTP methods
-    + **POST** (Create)
-    + **GET** (Read)
-    + **PUT** (Update)
-    + **DELETE** (Delete)
-* HTML only supports **GET** and **POST** [(see forms description)](http://www.w3schools.com/tags/att_form_method.asp)
-
-
-PUT can sometimes be used to create, if the API allows
-------------------------------------------------------
-<br>
-Should create a new resource at the requested URI if supported
-
-        PUT /some/resource/{requestedid} HTTP/1.1
-
-
-Other HTTP methods
-------------------
-* ***PATCH***: Partial update, not requiring full representation (and thus less bandwidth)
-    + ***Caveat***: not idempotent and some clients do not support patch
-
-
-Other HTTP methods
-------------------
-* ***OPTIONS***
-    + Indicates what HTTP methods can be used on a given resource
-    + May include a response body, although HTTP 1.1 doesn't require it
-
-
-Other HTTP methods
-------------------
-* ***HEAD***
-    + Like **GET**, except no response body
-    + Used to test links. Returns response codes, Content-Type and other header information
-
-
-Other HTTP methods
-------------------
-* Put everything else behind a ? (in a ***query string***)
-* Note: There are some remaining methods (TRACE, CONNECT...), but we don't use them
-
-
-Safe Methods
-------------
-* should never change a resource representation on the server
-* GET and HEAD are safe methods
-
-
-[Idempotence](http://restcookbook.com/HTTP%20Methods/idempotency/)
-------------------------------------------------------------------
-* property that N>0 identical requests yields the same result as initial application
-* `a=4;` is idempotent
-* `a++;` is not idempotent
-* GET, HEAD, PUT and DELETE are idempotent
-* POST and PATCH are not idempotent
-
-
-Idempotence is pretty important
--------------------------------
-It says why you shouldn't insert data using a GET method
-
-
-Query Strings
--------------
-* multiple parameters joined by '&'
-* filters (boolean operators)
-
-        http://www.petshop.com/cats?name=fluffy&color=black&age=6&order=1
-
-* query (full text search)
-    + usually starts with 'q'
-
-            http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
-
-
-[URL Encodings](http://www.w3schools.com/tags/ref_urlencode.asp)
-----------------------------------------------------------------
-* URLs only support the ASCII character-set
-* Unsafe characters are replaced with a % followed by two hexadecimal digits (0..F)
-* Can't contain spaces, replaces with + sign
-
-        #Filter for cats named Günter with black fur, age 6
-        http://www.petshop.com/cats?name=G%FCnter&color=black&age=6
-
-        #Search books for "fluffy black kitten"
-        http://www.petshop.com/books?q=fluffy+black+kitten
-
-
-And back to REST...
--------------------
+* Avoids custom protocols, just uses HTTP ([RFC 2616](http://pretty-rfc.herokuapp.com/RFC2616#character.sets))
 
 
 Source of REST
@@ -274,6 +84,7 @@ Resources can also be nested...
 So you can have a call like this
 --------------------------------
 
+
 Request
 -------
 ![Alt fox](images/fox.jpg)
@@ -286,11 +97,10 @@ Request
 and get something like this
 ---------------------------
 
+
 Response
 --------
 ![Alt Fox](images/ylvis_fox.png)
-
-### Response Body ###
 
     {
     "sounds": [
@@ -335,6 +145,11 @@ States
 States & Transitions
 --------------------
 * Given a state and request, the server will determine the next state and generate a response
+
+
+Short Presentation, Stop Here
+---------
+Incomplete slides follow
 
 
 Example HTTP Request & Response
@@ -431,6 +246,7 @@ Identity often provided using API key
 Stateless No Nos:
 -----------------
 ![Alt Cookie Monster](images/cookiemonster.jpg)
+
 * ***DO NOT*** Store state in cookies
 * ***DO NOT*** create or rely on sessions
 * ***DO NOT*** store auth tokens in the cookie
@@ -716,11 +532,6 @@ Authentication
 * Can have multiple authentication types supported (Github API supports all of the above)
 
 
-Stop Here
----------
-Incomplete slides follow
-
-
 [Richardson Maturity Model](http://martinfowler.com/articles/richardsonMaturityModel.html)
 -------------------------------------------------------------------------------------------
 * 99.99% of "REST" APIs aren't REST
@@ -809,18 +620,171 @@ Narrow Media Type
 
 
 
-Let's Design
-============
-![Alt Design bed image](images/cartoon-bed-med.jpg)
+HTTP Background
+=============
+![Alt http](images/cartoon-bed-med.jpg)
 
 
-Identify Resources
+[HTTP](http://www.w3.org/Protocols/)
+------------------------------------
+* Hypertext Transfer Protocol
+* A request-response architecture
+* Building block of the Internet as we know it
+* Normally over TCP/IP transport protocol, but can support others as long as they are reliable
+* Headers are visible, body can be encoded (like gzip)
+* ***Trivia***: Fielding co-wrote the HTTP standard
+* ***More trivia***: HTTP isn't the most used protocol. Do you know what is? [Answer](http://en.wikipedia.org/wiki/BitTorrent)
+
+
+HTTP Request
+------------
+
+### Request-Line ###
+request method + URI + protocol version
+<br>
+### Request Header ###
+* request modifiers
+* client information
+<br>
+### Request Body ###
+* (possibly) body content
+
+
+HTTP Request Example
+--------------------
+<br>
+### Request ###
+
+    POST /animals  HTTP/1.1
+
+### Request Header ###
+
+    User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.66 Safari/537.36
+    Content-Type: application/json; charset=utf-8
+    Accept: */*
+    Accept-Encoding: gzip,deflate,sdch
+    Accept-Language: en-US,en;q=0.8
+
+### Request Body ###
+
+    {
+    "animal": "aardvark",
+    "description": "wow this thing really likes ants. how cool!"
+    }
+
+
+HTTP Response
+-------------
+Server responds with Status Line (protocol version, status code and phrase) and possibly a response body
+
+
+HTTP Response
+-------------
+### Response Header  ###
+
+    HTTP/1.1 201 CREATED
+    Date: Wed, 2 Oct 2013 17:59:13 GMT
+    Server: Apache/1.4.27
+    Content-Length: 345
+    Content-Type: application/json
+
+### Response Body ###
+    {
+        "id": 194,
+        "url": "http://foo.com/animals/194",
+        "animal": "aardvark",
+        "description": "wow this thing really likes ants. how cool!"
+    }
+
+
+CRUD
+----
+* Uses HTTP methods
+    + **POST** (Create)
+    + **GET** (Read)
+    + **PUT** (Update)
+    + **DELETE** (Delete)
+* HTML only supports **GET** and **POST** [(see forms description)](http://www.w3schools.com/tags/att_form_method.asp)
+
+
+PUT can sometimes be used to create, if the API allows
+------------------------------------------------------
+<br>
+Should create a new resource at the requested URI if supported
+
+        PUT /some/resource/{requestedid} HTTP/1.1
+
+
+Other HTTP methods
 ------------------
+* ***PATCH***: Partial update, not requiring full representation (and thus less bandwidth)
+    + ***Caveat***: not idempotent and some clients do not support patch
 
 
-Create a transition diagram
----------------------------
-![Alt Transition Diagram](images/api_states_and_transitions.png)
+Other HTTP methods
+------------------
+* ***OPTIONS***
+    + Indicates what HTTP methods can be used on a given resource
+    + May include a response body, although HTTP 1.1 doesn't require it
+
+
+Other HTTP methods
+------------------
+* ***HEAD***
+    + Like **GET**, except no response body
+    + Used to test links. Returns response codes, Content-Type and other header information
+
+
+Other HTTP methods
+------------------
+* Put everything else behind a ? (in a ***query string***)
+* Note: There are some remaining methods (TRACE, CONNECT...), but we don't use them
+
+
+Safe Methods
+------------
+* should never change a resource representation on the server
+* GET and HEAD are safe methods
+
+
+[Idempotence](http://restcookbook.com/HTTP%20Methods/idempotency/)
+------------------------------------------------------------------
+* property that N>0 identical requests yields the same result as initial application
+* `a=4;` is idempotent
+* `a++;` is not idempotent
+* GET, HEAD, PUT and DELETE are idempotent
+* POST and PATCH are not idempotent
+
+
+Idempotence is pretty important
+-------------------------------
+It says why you shouldn't insert data using a GET method
+
+
+Query Strings
+-------------
+* multiple parameters joined by '&'
+* filters (boolean operators)
+
+        http://www.petshop.com/cats?name=fluffy&color=black&age=6&order=1
+
+* query (full text search)
+    + usually starts with 'q'
+
+            http://www.petshop.com/cats?q=fluffy+black+kitten&order=1
+
+
+[URL Encodings](http://www.w3schools.com/tags/ref_urlencode.asp)
+----------------------------------------------------------------
+* URLs only support the ASCII character-set
+* Unsafe characters are replaced with a % followed by two hexadecimal digits (0..F)
+* Can't contain spaces, replaces with + sign
+
+        #Filter for cats named Günter with black fur, age 6
+        http://www.petshop.com/cats?name=G%FCnter&color=black&age=6
+
+        #Search books for "fluffy black kitten"
+        http://www.petshop.com/books?q=fluffy+black+kitten
 
 
 
@@ -844,17 +808,18 @@ Documentation
 Code libraries and SDKs
 -----------------------
 * Ruby
-    + Rails
-    + Sinatra
+    + [Rails](http://rubyonrails.org/)
+    + [Sinatra](http://www.sinatrarb.com/)
 * Javascript
-    + Express.js
+    + [Restify](http://mcavage.me/node-restify/)
+    + [Express.js](http://expressjs.com/)
 * Java
-    + Jersey
-    + Restlet
+    + [Jersey](https://jersey.java.net/)
+    + [Restlet](http://restlet.org/)
 * Python
-    + Flask
-    + Django
-    + Bottle
+    + [Flask](http://flask.pocoo.org/)
+    + [Django](https://www.djangoproject.com/)
+And many more...
 
 
 Misc
@@ -892,7 +857,8 @@ Study Examples
 Reading / Videos
 ----------------
 * [RestFest Videos](http://vimeo.com/channels/restfest2013)
-* Mark Nottingham posts on 
+* Mark Nottingham posts on
+  + [Web API Versioning](http://www.mnot.net/blog/2011/10/25/web_api_versioning_smackdown)
   + [why to consider linking an HTTP API](http://www.mnot.net/blog/2013/06/23/linking_apis)
   + [HTTP API Complexity](http://www.mnot.net/blog/2012/06/25/http_api_complexity_model) 
 * [JSON Home, a homepage for HTTP APIs](http://tools.ietf.org/html/draft-nottingham-json-home-03)
