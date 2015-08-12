@@ -88,7 +88,7 @@
             <section>
                 <h2>Web Service Call</h2>
                 <br>
-                Request-Line:<pre><code>GET http://codecamp.apiary.io/hello-basic HTTP/1.1</code></pre>
+                Request-Line:<pre><code>GET http://private-79b7-codecamp.apiary-mock.com/hello-basic HTTP/1.1</code></pre>
 
                 <form>
                     <button id="codecampbtn1" onclick="call_code_camp_basic();">Run</button>
@@ -96,7 +96,7 @@
 
                 <script type="text/javascript">
                     function call_code_camp_basic() {
-                        $.ajax({url: "http://codecamp.apiary.io/hello-basic",
+                        $.ajax({url: "http://private-79b7-codecamp.apiary-mock.com/hello-basic",
                             dataType: "jsonp",
                             jsonpCallback: "mycallback",
                             success: function (data) {
@@ -115,7 +115,7 @@
             <section>
                 <h2>Web Service Call with Linking</h2>
                 <br>
-                Request-Line:<pre><code>GET http://codecamp.apiary.io/hello-linked HTTP/1.1</code></pre>
+                Request-Line:<pre><code>GET http://private-79b7-codecamp.apiary-mock.com/hello-linked HTTP/1.1</code></pre>
 
                 <form>
                     <button id="codecampbtn2" onclick="call_code_camp_linked();">Run</button>
@@ -123,7 +123,7 @@
 
                 <script type="text/javascript">
                     function call_code_camp_linked() {
-                        $.ajax({url: "http://codecamp.apiary.io/hello-linked",
+                        $.ajax({url: "http://private-79b7-codecamp.apiary-mock.com/hello-linked",
                             dataType: "jsonp",
                             jsonpCallback: "mycallback",
                             success: function (data) {
